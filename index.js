@@ -3,35 +3,19 @@ const express = require("express");
 const app = express();
 
 const port = 3000;
+const repo = require("./repositories/product-file");
 
 app.get("/", (req, res, next) => {
-    let products = [{
-        "productId":89,
-        "name":"All purpose bike stand"
-    },
-    {
-        "productId":90,
-        "name":"Bike wash disolver"
-    },
-    {
-        "productId":91,
-        "name":"Cable Lock"
-    },
-    {
-        "productId":92,
-        "name":"Chain"
-    }
-];
-//res.status(206).json(products);
-    //res.send(products);
-    res.json({
-        "status":200,
-        "statusText":"OK",
-        "message":"All products retrieved",
-        "data":products
-    });
+  let products = repo.get();
+  //res.status(206).json(products);
+  //res.send(products);
+  res.json({
+    status: 200,
+    statusText: "OK",
+    message: "All products retrieved",
+    data: products,
+  });
 });
-
 
 //Create web server to listen on specific port
 let server = app.listen(port, function () {
