@@ -1,24 +1,18 @@
-let repo = {};
+const fs = require("fs");
 
-repo.get = function () {
-  return [
-    {
-      productId: 89,
-      name: "All purpose bike stand",
-    },
-    {
-      productId: 90,
-      name: "Bike wash disolver",
-    },
-    {
-      productId: 91,
-      name: "Cable Lock",
-    },
-    {
-      productId: 92,
-      name: "Chain",
-    },
-  ];
+const DATA_FILE = "./db/product.json";
+
+let repo = (exports = module.exports = {});
+
+repo.get = function (resolve, reject) {
+  fs.readFile(DATA_FILE, function (err, data) {
+    if (err) {
+      reject(err);
+    } else {
+      let products = JSON.parse(data);
+      resolve(products);
+    }
+  });
 };
 
 module.exports = repo;
