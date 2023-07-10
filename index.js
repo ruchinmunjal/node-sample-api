@@ -25,7 +25,57 @@ app.get("/", (req, res, next) => {
   //res.send(products);
 });
 
-app.get('/:id', (req, res, next) => {
+app.get('/search', (req, res, next) => {
+    let search = {
+      name: req.query.name,
+      listPrice: req.query.listPrice,
+    };
+  
+    if (search.name || search.listPrice) {
+      repo.search(
+        search,
+        function (data) {
+          if (data && data.length > 0) {
+            res.send({
+              status: 200,
+              statusText: "OK",
+              message: "Search was successful",
+              data: data,
+            });
+          } else {
+            let msg = `The search for '${JSON.stringify(
+              search
+            )}' was not successful`;
+            res.status(400).send({
+              status: 400,
+              statusText: "Not Found",
+              message: msg,
+              error: {
+                code: "NOT_FOUND",
+                message: msg,
+              },
+            });
+          }
+        },
+        function (err) {
+          next(err);
+        }
+      );
+    } else {
+      let msg = `No search parameters passed in`;
+      res.status(400).send({
+        status: 400,
+        statusText: "Bad Request",
+        message: msg,
+        error: {
+          code: "BAD_REQUEST",
+          message: msg,
+        },
+      });
+    }
+  });
+
+app.get("/:id", (req, res, next) => {
   repo.getById(
     req.params.id,
     function (data) {
@@ -54,6 +104,8 @@ app.get('/:id', (req, res, next) => {
     }
   );
 });
+
+
 
 //Create web server to listen on specific port
 let server = app.listen(port, function () {

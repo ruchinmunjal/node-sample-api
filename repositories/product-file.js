@@ -15,16 +15,38 @@ repo.get = function (resolve, reject) {
   });
 };
 
-repo.getById=function(id,resolve,reject){
-fs.readFile(DATA_FILE,function(err,data){
-    if(err){
-        reject(err);
+repo.getById = function (id, resolve, reject) {
+  fs.readFile(DATA_FILE, function (err, data) {
+    if (err) {
+      reject(err);
+    } else {
+      let products = JSON.parse(data);
+      let product = products.find((row) => row.productID == id);
+      resolve(product);
     }
-    else{
-        let products=JSON.parse(data);
-        let product=products.find(row=>row.productID == id);
-        resolve(product)
-    }
-})
+  });
 };
+
+repo.search = function (search, resolve, reject) {
+  if (search) {
+    fs.readFile(DATA_FILE, function (err, data) {
+      if (err) {
+        reject(err);
+      } else {
+        let products = JSON.parse(data);
+        products = products.filter(
+          (row) =>
+            (search.name
+              ? row.name.toLowerCase().indexOf(search.name.toLowerCase()) >= 0
+              : true) &&
+            (search.listPrice
+              ? parseFloat(row.listPrice) > parseFloat(search.listPrice)
+              : true)
+        );
+        resolve(products);
+      }
+    });
+  }
+};
+
 module.exports = repo;
