@@ -1,112 +1,13 @@
 const express = require("express");
 
 const app = express();
-
+const router = express.Router();
+app.use(express.json());
 const port = 3000;
-const repo = require("./repositories/product-file");
 
-app.get("/", (req, res, next) => {
-  repo.get(
-    function (data) {
-      res.json({
-        status: 200,
-        statusText: "OK",
-        message: "All products retrieved",
-        data: data,
-      });
-    },
-    function (err) {
-      next(err);
-    }
-  );
+router.use('/product', require('./routes/product'));
 
-  //let products = repo.get();
-  //res.status(206).json(products);
-  //res.send(products);
-});
-
-app.get('/search', (req, res, next) => {
-    let search = {
-      name: req.query.name,
-      listPrice: req.query.listPrice,
-    };
-  
-    if (search.name || search.listPrice) {
-      repo.search(
-        search,
-        function (data) {
-          if (data && data.length > 0) {
-            res.send({
-              status: 200,
-              statusText: "OK",
-              message: "Search was successful",
-              data: data,
-            });
-          } else {
-            let msg = `The search for '${JSON.stringify(
-              search
-            )}' was not successful`;
-            res.status(400).send({
-              status: 400,
-              statusText: "Not Found",
-              message: msg,
-              error: {
-                code: "NOT_FOUND",
-                message: msg,
-              },
-            });
-          }
-        },
-        function (err) {
-          next(err);
-        }
-      );
-    } else {
-      let msg = `No search parameters passed in`;
-      res.status(400).send({
-        status: 400,
-        statusText: "Bad Request",
-        message: msg,
-        error: {
-          code: "BAD_REQUEST",
-          message: msg,
-        },
-      });
-    }
-  });
-
-app.get("/:id", (req, res, next) => {
-  repo.getById(
-    req.params.id,
-    function (data) {
-      if (data) {
-        res.send({
-          status: 200,
-          statusText: "OK",
-          message: "Single product received",
-          data: data,
-        });
-      } else {
-        let msg = `The product '${req.params.id}' could not be found`;
-        res.status(404).send({
-          status: 404,
-          statusText: "OK",
-          message: msg,
-          error: {
-            code: "NOT_FOUND",
-            message: msg,
-          },
-        });
-      }
-    },
-    function (err) {
-      next(err);
-    }
-  );
-});
-
-
-
+app.use("/api", router);
 //Create web server to listen on specific port
 let server = app.listen(port, function () {
   console.log(`API server is running on http://localhost:${port}`);
