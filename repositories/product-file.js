@@ -49,21 +49,45 @@ repo.search = function (search, resolve, reject) {
   }
 };
 
-repo.insert = function(newProduct,resolve,reject){
-    fs.readFile(DATA_FILE,function(err,data){
+repo.insert = function (newProduct, resolve, reject) {
+  fs.readFile(DATA_FILE, function (err, data) {
+    if (err) {
+      reject(err);
+    } else {
+      let products = JSON.parse(data);
+      products.push(newProduct);
+      fs.writeFile(DATA_FILE, JSON.stringify(products), function (err) {
         if (err) {
-            reject(err)
+          reject(err);
         } else {
-            let products= JSON.parse(data);
-            products.push(newProduct);
-            fs.writeFile(DATA_FILE,JSON.stringify(products),function(err){
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(newProduct);
-                }
-            });
+          resolve(newProduct);
         }
-    });
+      });
+    }
+  });
+};
+
+repo.update = function (updateProduct, id, resolve, reject) {
+  fs.readFile(DATA_FILE, function (err, data) {
+    if (err) {
+      reject(err);
+    } else {
+      let products = JSON.parse(data);
+      let product = products.filter((row) => {
+        row.productID == id;
+      });
+      if (product) {
+        Object.assign(product, updateProduct);
+      }
+
+      fs.writeFile(DATA_FILE, JSON.stringify(products), function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(product);
+        }
+      });
+    }
+  });
 };
 module.exports = repo;
