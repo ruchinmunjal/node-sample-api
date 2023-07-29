@@ -1,0 +1,58 @@
+{
+  "tags": ["product"],
+  "description": "Creates a new product",
+  "requestBody": {
+    "description": "Request parameters in JSON format",
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "required": [
+            "Id",
+            "name",
+            "productNumber",
+            "color",
+            "standardCost",
+            "listPrice"
+          ],
+          "properties": {
+            "productID": {
+              "type": "number",
+              "example": 786
+            },
+            "name": {
+              "type": "string",
+              "example": "HL Road Frame - Red, 58"
+            },
+            "productNumber": {
+              "type": "string",
+              "example": "FR-R92R-58"
+            },
+            "color": {
+              "type": "string",
+              "example": "Red"
+            },
+            "standardCost": {
+              "type": "number"
+            },
+            "listPrice": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "200": {
+      "$ref": "../../responses/success.json"
+    },
+    "400": {
+      "$ref": "../../responses/bad-request.json"
+    },
+    "500": {
+      "$ref": "../../responses/internal-server-error.json"
+    }
+  }
+}

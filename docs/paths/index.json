@@ -1,0 +1,15 @@
+{
+    "/product": {
+      "post": {
+        "$ref": "./product/productCreate.json"
+      },
+      "put": {
+        "$ref": "./product/productUpdate.json"
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "$ref": "./product/productRead.json"
+      }
+    }
+  }
