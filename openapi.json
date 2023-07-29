@@ -1,0 +1,280 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Products API",
+    "description": "Products API to retrieve, update and delete products",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://{host}:{port}/api",
+      "description": "local server",
+      "variables": {
+        "host": {
+          "default": "localhost",
+          "description": "points to the application running locally"
+        },
+        "port": {
+          "default": "3000"
+        }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "required": [
+          "productID",
+          "name",
+          "productNumber",
+          "color",
+          "standardCost",
+          "listPrice"
+        ],
+        "properties": {
+          "productID": {
+            "type": "number",
+            "example": 786
+          },
+          "name": {
+            "type": "string",
+            "example": "HL Road Frame - Red, 58"
+          },
+          "productNumber": {
+            "type": "string",
+            "example": "FR-R92R-58"
+          },
+          "color": {
+            "type": "string",
+            "example": "red"
+          },
+          "standardCost": {
+            "type": "number"
+          },
+          "listPrice": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Success": {
+        "description": "Response for successful operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "boolean",
+                  "enum": [
+                    true
+                  ],
+                  "example": true
+                },
+                "item": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Response for unsuccessful operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Something went wrong while creating a new item!"
+                },
+                "product": {
+                  "type": "object",
+                  "enum": [
+                    null
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Response for a bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Product was missing some important information!"
+                },
+                "product": {
+                  "type": "object",
+                  "enum": [
+                    null
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/product": {
+      "post": {
+        "tags": [
+          "product"
+        ],
+        "description": "Creates a new product",
+        "requestBody": {
+          "description": "Request parameters in JSON format",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "Id",
+                  "name",
+                  "productNumber",
+                  "color",
+                  "standardCost",
+                  "listPrice"
+                ],
+                "properties": {
+                  "productID": {
+                    "type": "number",
+                    "example": 786
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "HL Road Frame - Red, 58"
+                  },
+                  "productNumber": {
+                    "type": "string",
+                    "example": "FR-R92R-58"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "Red"
+                  },
+                  "standardCost": {
+                    "type": "number"
+                  },
+                  "listPrice": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "product"
+        ],
+        "description": "Update product details",
+        "requestBody": {
+          "description": "Request parameters in JSON format",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "productNumber",
+                  "color",
+                  "standardCost",
+                  "listPrice"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "HL Road Frame - Red, 58"
+                  },
+                  "productNumber": {
+                    "type": "string",
+                    "example": "FR-R92R-58"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "Red"
+                  },
+                  "standardCost": {
+                    "type": "number"
+                  },
+                  "listPrice": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "description": "Fetch product details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Success"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  }
+}

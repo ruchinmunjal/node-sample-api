@@ -1,0 +1,20 @@
+{
+    "description": "Response for a bad request",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "example": "Product was missing some important information!"
+            },
+            "product": {
+              "type": "object",
+              "enum": [null]
+            }
+          }
+        }
+      }
+    }  
+  }
