@@ -5,23 +5,26 @@
       "schema": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "number",
-            "example": 200
+          "status":{
+            "type":"number",
+            "example":200
           },
-          "statusText": {
-            "type": "string",
-            "example": "OK"
+          "statusText":{
+            "type":"string",
+            "example":"OK"
           },
           "message": {
             "type": "string",
             "example": "All products retrieved"
           },
           "data": {
-          "$ref":"../schemas/product.json"
+            "type":"array",
+            "items":{
+              "$ref":"../schemas/product.json"
+            }
           }
         }
       }
     }
-  }
+  }  
 }

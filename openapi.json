@@ -56,6 +56,17 @@
             "type": "number"
           }
         }
+      },
+      "ArrayOfProducts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "schema": {
+              "$ref": "#/components/schemas/Product"
+            }
+          }
+        }
       }
     },
     "responses": {
@@ -66,14 +77,19 @@
             "schema": {
               "type": "object",
               "properties": {
-                "message": {
-                  "type": "boolean",
-                  "enum": [
-                    true
-                  ],
-                  "example": true
+                "status": {
+                  "type": "number",
+                  "example": 200
                 },
-                "item": {
+                "statusText": {
+                  "type": "string",
+                  "example": "OK"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "All products retrieved"
+                },
+                "data": {
                   "$ref": "#/components/schemas/Product"
                 }
               }
@@ -134,6 +150,20 @@
   ],
   "paths": {
     "/product": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "description": "Retrieve ALL Products",
+        "responses": {
+          "200": {
+            "$ref": "#/paths/~1search/get/responses/200"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
       "post": {
         "tags": [
           "product"
@@ -269,6 +299,67 @@
         "responses": {
           "200": {
             "$ref": "#/components/responses/Success"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "description": "Search for a  product with given parameters",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "listPrice",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "statusText": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "All products retrieved"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"

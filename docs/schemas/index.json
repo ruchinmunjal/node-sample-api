@@ -1,5 +1,8 @@
 {
     "Product": {
       "$ref": "./product.json"
+    },
+    "ArrayOfProducts":{
+      "$ref":"./arrayOfProducts.json"
     }
   }

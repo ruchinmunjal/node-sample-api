@@ -1,5 +1,8 @@
 {
     "/product": {
+      "get":{
+        "$ref": "./product/productsRead.json"
+      },
       "post": {
         "$ref": "./product/productCreate.json"
       },
@@ -10,6 +13,11 @@
     "/product/{id}": {
       "get": {
         "$ref": "./product/productRead.json"
+      }
+    },
+    "/search":{
+      "get":{
+        "$ref":"./product/productSearch.json"
       }
     }
   }

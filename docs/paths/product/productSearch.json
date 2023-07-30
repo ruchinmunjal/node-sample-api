@@ -1,0 +1,30 @@
+{
+    "tags": ["product"],
+    "description": "Search for a  product with given parameters",
+    "parameters": [
+      {
+        "name": "name",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": false
+      },
+      {
+        "name": "listPrice",
+        "in": "query",
+        "schema": {
+          "type": "number"
+        },
+        "required": false
+      }
+    ],
+    "responses": {
+      "200": {
+        "$ref": "../../responses/success-data-array.json"
+      },
+      "500": {
+        "$ref": "../../responses/internal-server-error.json"
+      }
+    }
+  }
